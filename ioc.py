@@ -1,3 +1,5 @@
+# Finally some bad fucking code
+
 import inspect
 from dataclasses import dataclass
 from typing import Callable, Any
