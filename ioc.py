@@ -1,8 +1,7 @@
 # Finally some bad fucking code
-
 import inspect
 from dataclasses import dataclass
-from typing import Callable, Any
+from typing import Callable, Any, Self
 
 
 class AlreadyRegisteredException(Exception):
@@ -22,9 +21,9 @@ class Item:
 
 class Provide:
 
-    container_instance = None
+    _items = None
 
-    def __class_getitem__(cls, key):
+    def __class_getitem__(cls, key) -> object | Callable:
         try:
             if key not in cls._items:
                 raise NotRegisteredException
@@ -49,14 +48,19 @@ class Provide:
 
 
 class Container:
-    def __init__(self):
+    def __init__(self) -> None:
+        self.is_closed = False
         self._items = {}
 
-    def register(self, key: object, value: object | Callable, **kwargs):
-        if key in self._items:
+    def register(self, key: object, value: object | Callable, **kwargs) -> None:
+        if self.is_closed:
             raise AlreadyRegisteredException
 
         self._items[key] = Item(key, value, kwargs)
 
-    def wire(self):
+    def wire(self) -> Self:
         Provide._items = self._items
+        return self
+
+    def close_edit(self):
+        self.is_closed = True
