@@ -52,7 +52,7 @@ def define_container():
     container.register(NotifyService, NotifyServiceImpl)
     container.register(UserService, UserServiceImpl)
 
-    container.wire()
+    container.wire().close_edit()
 ```
 
 # main.py
