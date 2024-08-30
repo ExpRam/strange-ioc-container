@@ -24,15 +24,15 @@ class NotifyServiceImpl(NotifyService):
 
 class UserService(ABC):
 
-    def __init__(self, notify_service: NotifyService):
-        self.notify_service = notify_service
-
     @abstractmethod
     def change_password(self, user: dict, new_pwd: str):
         raise NotImplementedError
 
 
 class UserServiceImpl(UserService):
+
+    def __init__(self, notify_service: NotifyService):
+        self.notify_service = notify_service
 
     def change_password(self, user: dict, new_pwd: str):
         user['password'] = new_pwd
