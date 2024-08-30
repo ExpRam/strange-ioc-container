@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from typing import Callable, Any, Self
 
 
-class AlreadyRegisteredException(Exception):
+class ClosedForEditException(Exception):
     pass
 
 
@@ -54,7 +54,7 @@ class Container:
 
     def register(self, key: object, value: object | Callable, **kwargs) -> None:
         if self.is_closed:
-            raise AlreadyRegisteredException
+            raise ClosedForEditException
 
         self._items[key] = Item(key, value, kwargs)
 
